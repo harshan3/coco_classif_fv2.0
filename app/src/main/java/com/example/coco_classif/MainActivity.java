@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     //private ListView listView;
     private ImageClassifier imageClassifier;
     private TextView textView;
+    private TextView Suggestion_textView;
+
 
 
     @Override
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.iv_capture);
        // listView = findViewById(R.id.lv_probabilities);
         textView = findViewById(R.id.textView2);
+        Suggestion_textView = findViewById(R.id.textView3);
 
         Button takepicture = findViewById(R.id.bt_take_picture);
 
@@ -129,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         //   predictionList.add(recog.getName() + "   " + "Confidence: " + recog.getConfidance());
                         predictionList.add(recog.getName());
                         textView.setText(recog.getName());
+                        suggest_pest();
                     }
 
                     ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(
@@ -214,4 +219,59 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    private void alertDialog() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+
+
+        if(textView.getText().toString().equals("healthy")){
+            String[] healthy={"healthy_Pesticide_name_1", "healthy_Pesticide_name_2", "healthy_Pesticide_name_3", "healthy_Pesticide_name_4", "healthy_Pesticide_name_5"};
+            Random r=new Random();
+            int randomNumber=r.nextInt(healthy.length);
+            dialog.setMessage("Suggested Pesticide is: "+ healthy[randomNumber]);
+        }else if(textView.getText().toString().contains("Unhealthy")){
+            String[] unhealthy={"unhealthy_Pesticide_name_1", "unhealthy_Pesticide_name_2", "unhealthy_Pesticide_name_3", "unhealthy_Pesticide_name_4", "unhealthy_Pesticide_name_5"};
+            Random r=new Random();
+            int randomNumber=r.nextInt(unhealthy.length);
+            dialog.setMessage("Suggested Pesticide is: "+ unhealthy[randomNumber]);
+        }
+        else{
+            dialog.setMessage("Predict by tapping the button below");
+        }
+        dialog.setTitle("Dialog Box");
+
+        dialog.setNegativeButton("cancel",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alertDialog=dialog.create();
+        alertDialog.show();
     }
+
+    public void suggest_pest(){
+        if(textView.getText().toString().equals("healthy")){
+            String[] healthy={"healthy_Pesticide_name_1", "healthy_Pesticide_name_2", "healthy_Pesticide_name_3", "healthy_Pesticide_name_4", "healthy_Pesticide_name_5"};
+            Random r=new Random();
+            int randomNumber=r.nextInt(healthy.length);
+            Suggestion_textView.setText("Suggested Pesticide is: "+ healthy[randomNumber]);
+
+        }else if(textView.getText().toString().equals("Unhealthy")){
+            String[] unhealthy={"unhealthy_Pesticide_name_1", "unhealthy_Pesticide_name_2", "unhealthy_Pesticide_name_3", "unhealthy_Pesticide_name_4", "unhealthy_Pesticide_name_5"};
+            Random r=new Random();
+            int randomNumber=r.nextInt(unhealthy.length);
+            Suggestion_textView.setText("Suggested Pesticide is: "+ unhealthy[randomNumber]);
+        }
+        else{
+            Suggestion_textView.setText("");
+        }
+
+    }
+
+
+    public void perform_text(View view) {
+       // alertDialog();
+
+    }
+}
